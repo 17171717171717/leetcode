@@ -1,0 +1,17 @@
+//左到右，右到左，一定會在兩邊某個最高(or同高度)的停下來
+//接下來再找另一邊
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int nums = height.size();
+        int ans = 0;
+        int i=0,j=nums-1;
+        while(j>i){
+            
+            ans = max(ans,min(height[i],height[j])*(j-i));
+            height[i] < height[j] ? i++ : j--;
+        }
+        return ans;
+    }
+};
