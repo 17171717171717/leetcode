@@ -1,0 +1,25 @@
+//模擬題，判斷CASE
+class Solution {
+public:
+    string intToRoman(int num) {
+        string ans = "";
+        vector<char>Roman = {'M','D','C','L','X','V','I'};
+        vector<int>val = {1000,500,100,50,10,5,1};
+        int x;
+        for(int n=0;n<=6;n+=2){//0246:1000 100 10 1
+            x = num / val[n];
+            if(x < 4){
+                for(int i=1;i<=x;i++) ans += Roman[n];//3:III
+            }else if (x==4){
+                ans = ans + Roman [n] + Roman [n-1]; //4:IV->I+V->[n]+[n-1]
+            }else if (x>4&&x<9){
+                ans += Roman[n-1];//5678:V,VI,VII,VIII
+                for(int i=1;i<=x-5;i++) ans+= Roman[n];
+            }else if (x==9){
+                ans = ans + Roman[n] + Roman[n-2];//CM,XC :10-1,n-2+n
+            }
+            num %= val[n];
+        }
+        return ans;
+    }
+};
