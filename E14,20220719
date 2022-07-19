@@ -1,0 +1,18 @@
+//特判0,1 , FOR裡面判全部一樣就加進去
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        if(strs.size()==0) return "";
+        if(strs.size()==1) return strs[0];
+        string ans = "";
+        
+        for(int j=0; j<strs[0].size();j++){
+            char c = strs[0][j];
+            for(int i =1;i<strs.size();i++){
+                if(c != strs[i][j] || j>=strs[i].size()) return ans;
+                if(i == strs.size()-1) ans += c;
+            }
+        }
+        return ans;
+    }
+};
