@@ -1,0 +1,18 @@
+//ifor: digits[0]~[n-1], str: dict[phonenumber idx], jfor: ans目前的每個都抓出來補+str -> STR有0 OR 3 OR 4種 一路做下去ans越來越多東西
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        if(digits.length() == 0)return {};
+        vector<string>ans ={""};
+        vector<string>dict = {""," ","abc","def","ghi","jkl", "mno", "pqrs", "tuv", "wxyz"};
+        for(int i=0;i<digits.length();i++){
+            vector<string>tmp;
+            string str = dict[digits[i]-'0'];
+            for(int j=0;j<str.length();j++){
+                for(string s:ans)tmp.push_back(s+str[j]);
+            }
+            ans = tmp;
+        }
+        return ans;
+    }
+};
