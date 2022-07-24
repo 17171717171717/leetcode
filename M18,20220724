@@ -1,0 +1,32 @@
+//注意LONG LONG ,(LONG)在幹嘛就好
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        vector<vector<int>> ans;
+        int len = nums.size();
+        int st,ed;
+        for(int i=0;i<len-3;i++){
+            if(i>0 && nums[i]==nums[i-1]) continue;
+            for(int j =i+1;j<len-2;j++){
+                if(j>(i+1)&&nums[j]==nums[j-1]) continue;
+                st=j+1;
+                ed=len-1;
+                while(st<ed){
+                    long tmp = (long)nums[i]+nums[j]+nums[st]+nums[ed];
+                    if(tmp == target){
+                        vector<int>nowans = {nums[i],nums[j],nums[st],nums[ed]};
+                        ans.push_back(nowans);
+                        while(st<ed && nums[st] == nums[st+1]) st++;
+                        while(st<ed && nums[ed] == nums[ed-1]) ed--;
+                        st++;
+                        ed--;
+                    }
+                    else if (tmp < target) st++;
+                    else ed--;
+                }
+            }
+        }
+        return ans;
+    }
+};
