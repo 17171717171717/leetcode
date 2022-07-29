@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int min=10000,max=0,tmpmin,tmpmax,ans,tmpans;
+        ans = 0;
+        for(int i=0;i<prices.size();i++){
+            if(tmpmin > tmpmax){//TMPMIN跑得比TMPMAX快 更新
+                max = 0; 
+            }
+            if(min > prices[i]){//找最小
+                min = prices[i];
+                tmpmin = i;
+            }
+            if(max < prices[i] ){//找最大
+                max = prices[i];
+                tmpmax = i;
+            }
+            if(tmpmax>tmpmin && max > min){//MIN前MAX後且MAX>MIN
+                tmpans=max - min;//可能有多組MAX-MIN
+                if(tmpans > ans) ans = tmpans;
+            }
+        }
+        return ans;
+    }
+};
