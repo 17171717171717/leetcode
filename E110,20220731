@@ -1,0 +1,33 @@
+1.每個點都做DFS計算高度
+class Solution {
+public:
+    int depth(TreeNode *n){
+        if( n==NULL )return 0;
+        return max(depth(n->left),depth(n->right))+1;
+    }
+    bool isBalanced(TreeNode* root) {
+        if (root== NULL) return true;
+        int lh = depth(root->left);
+        int rh = depth(root->right);
+        if(abs(lh - rh) >=2 || !isBalanced(root->left) || !isBalanced(root->right))return false;
+        return true;
+    }
+};
+//
+2.bottom-up 做一次就好
+class Solution {
+public:
+    int h(TreeNode* r){
+        if(r == NULL) return 0;
+        int lh = h(r->left);
+        if(lh == -1) return -1;
+        int rh = h(r->right);
+        if(rh == -1) return -1;
+        if(abs(lh - rh)>1)return -1;
+        return max(lh,rh)+1;
+    }
+    bool isBalanced(TreeNode* root) {
+        if(h(root)==-1) return false;
+        return true;
+    }
+};
