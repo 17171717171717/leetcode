@@ -1,0 +1,23 @@
+//走兩步追走一步總會追到
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(head == NULL) return false;
+        ListNode *run=head;
+        ListNode *walk=head;
+        while(run!=NULL && run->next != NULL){
+            run = run->next->next;
+            walk = walk->next;
+            if(run == walk) return true;
+        }
+        return false;
+    }
+};
