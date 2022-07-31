@@ -1,0 +1,14 @@
+//easy dp
+//累加小於0:選現在的，並且ans前面有過，跟現在這個唯一的比大小
+//累加>=0:可以繼續加前面的
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int ans = nums[0];
+        for(int i=1;i<nums.size();i++){
+            if (nums[i-1]>0) nums[i] += nums[i-1];
+            ans = max(ans,nums[i]);
+        }
+        return ans;
+    }
+};
