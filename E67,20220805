@@ -1,0 +1,61 @@
+/*overflow base
+
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        if(a == "0") return b;
+        if(b == "0") return a;
+        int as = a.size();
+        int bs = b.size();
+        long long base = 1;
+        int aa,bb,asum=0,bsum=0;
+        for(int i=as-1;i>=0;i--){
+            aa = a[i] - '0';
+            asum += aa*base;
+            base *= 2;
+        }
+        base = 1;
+        for(int i=bs-1 ; i>=0;i--){
+            bb = b[i] - '0';
+            bsum += bb*base;
+            base *= 2;
+        }
+        int sum = asum+bsum;
+        string ans= "";
+        while(sum>0){
+            int k = sum %2;
+            sum/=2;
+            ans += to_string(k);
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+        
+    }
+};
+*/ 
+class Solution {
+public:
+    string addBinary(string a, string b) {
+        
+        string ans ="";
+        int i=a.size()-1,j=b.size()-1;
+        int carry = 0;
+        while(i>=0 || j>=0){
+            int sum = carry;
+            if(i>=0){
+                sum += a[i]-'0';
+                i--;
+            }
+            if(j>=0){
+                sum += b[j]-'0';
+                j--;
+            }
+            ans.push_back(sum%2 + '0');//0 or 1
+            carry = sum/2;//sum = 0,1,2 => 0 1 no carry 2 carry
+        }
+        if(carry) ans.push_back(carry+'0');
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};
+
