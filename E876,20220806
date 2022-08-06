@@ -1,0 +1,24 @@
+
+class Solution {
+public:
+    ListNode* middleNode(ListNode* head) {
+        ListNode *slow = head, *fast = head;
+        while (fast && fast->next)
+            slow = slow->next, fast = fast->next->next;
+        return slow;
+    }
+    /*
+    ListNode* middleNode(ListNode* head) {
+        ListNode*now = head;
+        int id = 0;
+        while(now){
+            id++;
+            now = now->next;
+        }
+        int mid = id/2;
+        for(int i =1;i<=mid;i++){
+            head = head->next;
+        }
+        return head;
+    }*/
+};
