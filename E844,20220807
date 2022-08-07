@@ -1,0 +1,28 @@
+//從後往前，要是#或者前面有#就繼續往前走，都一樣的話就會一起走完也是同樣的路
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        int sz=s.size()-1;
+        int tz=t.size()-1;
+        int back;
+        while(1){
+            back = 0;
+            while(sz>=0 && (back>0 || s[sz] == '#')){//last one is #=>back = 1,
+                back+= (s[sz] == '#' ? 1 : -1);
+                sz--;
+            }
+            back = 0;
+            while(tz>=0 && (back>0 || t[tz] == '#')){
+                back+= (t[tz] == '#' ? 1 : -1);
+                tz--;
+            }
+            if (sz >= 0 && tz >= 0 && s[sz] == t[tz]) {
+                sz--;
+                tz--;
+            } else {
+                break;
+            }
+        }
+        return sz==-1 && tz==-1;
+    }
+};
