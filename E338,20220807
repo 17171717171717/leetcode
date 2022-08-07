@@ -1,0 +1,32 @@
+//DP,X/2就是bits往右移一格，要是X是單數就+1個1
+
+class Solution {
+public:
+    vector<int> countBits(int n) {
+    
+        vector<int> ans(n+1);
+        ans[0] = 0;
+        
+        for(int i = 1; i<=n; ++i)
+            ans[i] = ans[i/2] + i%2;
+        
+        return ans;
+    }
+};
+
+/*class Solution {
+public:
+    vector<int> countBits(int n) {
+        vector<int>ans;
+        for(int i=0;i<=n;i++){
+            int one=0;
+            int anss=i;
+            while(anss>0){
+                one += anss%2;
+                anss/=2;
+            }
+            ans.push_back(one);
+        }
+        return ans;
+    }
+};*/
