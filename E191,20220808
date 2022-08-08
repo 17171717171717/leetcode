@@ -15,3 +15,15 @@ public:
 //1101 1100 ,  => 1100
 //11111 11110 => 11110
 //11010 11001 => 11000
+
+class Solution {
+public:
+    int hammingWeight(uint32_t n){
+        int ans=0;
+        while(n){
+            if(n%2) ans++;
+            n/=2;
+        }
+        return ans;
+    }
+};
