@@ -1,0 +1,40 @@
+/*
+1->2->3->4->3->2->1->null
+fast = null
+slow = 4
+slow->next = 3
+reverse(slow->next)
+null<-3<-2<-1 compare with 1->2->3->…
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast && fast->next) {
+          fast = fast->next->next;
+          slow = slow->next;
+        }
+               // if fast != nullptr, list has odd numbers
+        if (fast) slow = slow->next;
+        slow = reverse(slow);    
+        while (slow) {
+          if (slow->val != head->val) return false;
+          slow = slow->next;
+          head = head->next;
+        }
+        return true;
+    }
+private:
+  ListNode* reverse(ListNode* bad) {
+    ListNode* prev = nullptr;
+    ListNode* next = nullptr;
+    while (bad) {
+      next = bad->next;
+      bad->next = prev;
+      prev = bad;
+      bad = next;
+    }
+    return prev;
+  }
+};
