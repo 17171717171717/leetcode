@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        //input:1001
+        if(x<0) return false;
+        int tmp=x,cnt=0;
+        while(tmp){
+            tmp/=10;//12 1 0,, 100 10 1 0
+            cnt++;//123 ,, 1 2 3 4
+        }
+        stack<int>s;
+        for(int i=0;i<cnt/2;i++){
+            tmp = x%10;//1,0
+            x/=10;//100 10
+            s.push(tmp);//0 1
+        }
+        
+        if(cnt%2)x/=10;
+        
+        for(int i=0;i<cnt/2;i++){
+            if(s.top()!= x%10 )return false;
+            x/=10;
+            s.pop();
+        }
+        return 1;
+        /////////////////
+        
+        long long y=0;
+        int tmp = x;
+        while(tmp>0){
+            int a = tmp%10;
+            y = y*10 + a;
+            tmp/=10;
+        }
+        if(x==y) return 1;
+        else return 0;
+    }
+};
