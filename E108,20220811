@@ -1,0 +1,13 @@
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        if (nums.empty()) return NULL;
+        int mid = nums.size() / 2 ;//1234
+        TreeNode *cur = new TreeNode (nums[mid]);
+        vector<int> left (nums.begin(),nums.begin()+mid);//0~1
+        vector<int> right (nums.begin()+mid+1,nums.end());//0+2+1
+        cur -> left = sortedArrayToBST(left); 
+        cur -> right = sortedArrayToBST(right); 
+        return cur;
+    }
+};
