@@ -1,0 +1,52 @@
+//BFS from 000->1111->2222
+
+class Solution {
+public:
+    int di[4]={1,-1,0,0};
+    int dj[4]={0,0,1,-1};
+    bool inborder(int m,int n,int r,int c){
+        if(r<0 || r>=m || c<0 || c>=n) return 0;
+        return 1;
+    }
+    vector<vector<int>> updateMatrix(vector<vector<int>>& mat) {
+        const int INF = 0x3f3f3f3f;
+        int m = mat.size();
+        int n = mat[0].size();
+        
+        queue<pair<int,int>> q;
+        
+        vector<vector<int>>dist(m,vector<int>(n,INF));
+        
+        vector<vector<bool>>vis(m,vector<bool>(n,false));
+        
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(mat[i][j] == 0){//0000
+                
+                    q.push({i,j});
+                    dist[i][j]=0;
+                    vis[i][j]=1;
+                    
+                }
+            }
+        }
+        
+        while(!q.empty()){
+            pair<int,int>cur = q.front();
+            q.pop();
+            int i = cur.first;
+            int j = cur.second;
+            
+            for(int k=0;k<4;k++){
+                if(inborder(m,n,i+di[k],j+dj[k]) && !vis[i+di[k]][j+dj[k]]){
+                
+                    dist[i+di[k]][j+dj[k]] = min(dist[i+di[k]][j+dj[k]],1+dist[i][j]);
+                    vis[i+di[k]][j+dj[k]] = 1;
+                    q.push({i+di[k],j+dj[k]});
+                    
+                }
+            }
+        }
+        return dist;
+    }
+};
