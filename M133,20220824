@@ -1,0 +1,27 @@
+//map,memory ops,ptr
+class Solution {
+public:
+    Node* dfs(Node* cur,unordered_map<Node*,Node*>& m){
+        vector<Node*>neibor;
+        Node* c = new Node(cur->val);
+        m[cur] = c;
+        for(auto it:cur->neighbors){
+            if(m.find(it)==m.end()) neibor.emplace_back(dfs(it,m));
+            else neibor.emplace_back(m[it]);
+        }
+        c->neighbors = neibor;
+        return c;
+        
+    }
+    Node* cloneGraph(Node* node) {
+        if(!node)return NULL;
+        
+        if(node->neighbors.size()==0){
+            
+            Node* c= new Node(node->val);
+            return c; 
+        }
+        unordered_map<Node*,Node*>m;
+        return dfs(node,m);
+    }
+};
