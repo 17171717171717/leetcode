@@ -1,0 +1,42 @@
+class Trie {
+private:
+    struct node{
+        node *chars[26] = {NULL};
+        bool isword = false;
+    };
+    node* root = new node();
+public:
+    Trie() {
+        
+    }
+    
+    void insert(string word) {
+        node*tmp = root;
+        for(char c:word){
+            if(!tmp->chars[c - 'a']){//沒有就加一顆 有就接著跑到結束為止
+                tmp->chars[c - 'a']=new node();
+            }
+            tmp = tmp->chars[c - 'a'];
+        }
+        tmp->isword = true;//看是不是插入一個字的字尾
+    }
+    
+    bool search(string word) {//一直走
+        node * tmp = root;
+        for(char c : word){
+            if(!tmp->chars[c- 'a'])return false;
+            tmp = tmp->chars[c- 'a'];
+        }
+        return tmp->isword;
+    }
+    
+    bool startsWith(string prefix) {
+        node *tmp = root;
+        for(char c : prefix){
+            if(!tmp->chars[c- 'a'])return false;
+            tmp = tmp->chars[c- 'a'];
+        }
+        return true;//只是找PREFIX
+    }
+};
+
