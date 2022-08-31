@@ -1,0 +1,33 @@
+//COINS　CHANGE不一定有GREEDYY!
+//Greedy Answer: 4 + 1 + 1
+//Actual Answer: 3 + 3
+//**** it suffices to check only for each m whether the greedy solution for ceiling⌈cm+1/cm⌉ * cm is optimal.
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int>dp(amount+1,INT_MAX);
+        dp[0] = 0;//base case
+        for(int i=1;i<=amount;i++){
+            for(auto c:coins){
+                if(i-c >= 0 && dp[i-c]!=INT_MAX){
+                    dp[i] = min(dp[i],dp[i-c]+1);
+                } 
+            }
+        }
+        return dp[amount]==INT_MAX ? -1 : dp[amount];
+       /* n--;
+        sort(coins.begin(),coins.end());
+        int cnt = 0;
+        while(amount>0 && n>=0){
+            while(coins[n]>amount)n--;
+            while(amount >= coins[n]){
+                cnt++;
+                amount -= coins[n];
+            }
+        }
+        if(amount==0) return cnt;
+        return -1;*/
+        
+        
+    }
+};
