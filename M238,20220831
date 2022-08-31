@@ -1,0 +1,80 @@
+//不能用除法
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int base = 1;
+        vector<int>ans(nums.size());
+        for(int i=0;i<nums.size();i++){
+            base*= nums[i];
+            ans[i] = base;
+        }
+        
+        base = 1;
+        for(int i=nums.size()-1;i>0;i--){
+            ans[i] = ans[i-1] * base;
+            base*=nums[i];
+        }
+        ans[0] = base;
+        return ans;
+        
+        
+       /*int tmp;
+        int i=0;
+        int flag = 0;
+        while(nums[i]==0 && i<nums.size()){
+            i++;
+            flag++;
+        }
+        if(i<nums.size()){
+            tmp = nums[i];
+            i++;
+        }
+        while(i<nums.size()){
+            if(nums[i]==0){
+                flag++;
+                i++;
+                continue;
+            }
+            tmp*=nums[i];
+            i++;
+        }
+        
+        vector<int>ans;
+        
+        for(int i=0;i<nums.size();i++){
+            if(flag==0){
+                ans.emplace_back(tmp/nums[i]);
+            }
+            else if(flag == 1 && nums[i] !=0 ){
+                ans.emplace_back(0);
+            }
+            else if(flag == 1 && nums[i] ==0){
+                ans.emplace_back(tmp);
+            }
+            else if(flag > 1 ) ans.emplace_back(0);
+        }
+
+        return ans;
+        */
+    }
+};
+
+OR
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        int base = 1;
+        vector<int>ans(nums.size(),1);
+        for(int i=1;i<nums.size();i++){
+            ans[i] = ans[i-1] * nums[i-1];
+        }
+        // 1 1 2 6
+        //乘到前一個的PREFIX
+        for(int i=nums.size()-1;i>=0;i--){
+            ans[i] *= base;
+            base *= nums[i];
+        }
+        // 24 12 8 6
+        return ans;
+    }
+};
