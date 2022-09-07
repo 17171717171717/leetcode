@@ -1,0 +1,66 @@
+//不可操作陣列大小以外的陣列
+//FOR內的Q.size()會一直變
+//Q.empty()可能是[0],[1]
+class Solution {
+public:
+
+    bool inborder(int n,int m,int i,int j)
+    {
+        if(i>=0 && j>=0 && i<n && j<m )
+            return true;
+        return false;
+    }
+    int orangesRotting(vector<vector<int>>& grid) {
+        queue<pair<int,int>> q;
+        int n= grid.size();
+        int m=grid[0].size();
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==2)
+                    q.push({i,j});
+            }
+        }
+        int x[4]={0,0,-1,+1};
+        int y[4]={-1,+1,0,0};
+        int count=0;
+   //     if(q.empty())return 0;
+        while(!q.empty())
+        {
+            //count++;
+            int size = q.size();
+            //for(int i=0;i<q.size();i++)
+            for(int i=0;i<size;i++)
+            {
+                int a=q.front().first;
+                int b=q.front().second;
+                q.pop();
+
+                for(int j=0;j<4;j++)
+                {
+                    // if(inborder(n,m,a+x[j],b+y[j]&&grid[a+x[j]][b+y[j]]==1)
+                    if(inborder(n,m,a+x[j],b+y[j])){
+                        if(grid[a+x[j]][b+y[j]]==1){
+                            
+                            grid[a+x[j]][b+y[j]]=2;
+                            q.push({a+x[j],b+y[j]});
+                        
+                        }
+                    }
+                }
+            }
+            if(q.size()>0)
+                count++;
+        }
+       // count--;//final one all 2s
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]==1) return -1;
+            }
+        }
+        return count;
+    }
+};
