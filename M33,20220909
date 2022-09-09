@@ -1,0 +1,39 @@
+//找到PIVOT再跑左右邊都是ascending sorted array binary search
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        if(nums.size()==0)return -1;
+        
+        int h =nums.size()-1;
+        int l = 0;
+        while(l < h){//find pivot pos
+        //while(l!=h):very slow
+            //break when l = h 
+            int m = (l+h)/2;
+            if(nums[m]>nums[h])l=m+1;
+            else h = m ;
+        }
+        //left side of pivot
+        int left = 0;
+        int right = l-1;
+        while(left <= right){
+            int m = (left+right)/2;
+            
+            if(nums[m]==target)return m;
+            else if(nums[m]>target)right = m-1;
+            else left = m+1;
+        }
+        //right side of pivot
+        left = l;
+        right = nums.size()-1;
+        while(left <= right){
+            int m = (left+right)/2;
+            
+            if(nums[m]==target)return m;
+            else if(nums[m]>target)right = m-1;
+            else left = m+1;
+        }
+        //
+        return -1;
+    }
+};
