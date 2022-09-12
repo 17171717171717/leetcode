@@ -1,0 +1,79 @@
+//5%,5%
+class Solution {
+public:
+    vector<vector<int>>ans;
+    void solve(int arrpos,vector<int>candidates,vector<int>tmp,int target){
+        if(target==0){
+            ans.emplace_back(tmp);
+            return;
+        }
+        if(target<0 )return;
+        if(arrpos == candidates.size())return;
+        
+        //not take this one
+        solve(arrpos+1,candidates,tmp,target);
+        
+        //take
+        tmp.emplace_back(candidates[arrpos]);
+        solve(arrpos,candidates,tmp,target-candidates[arrpos]);
+        tmp.pop_back();
+        
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        ans.clear();
+        vector<int>tmp;
+        solve(0,candidates,tmp,target);
+        return ans;
+    }
+};
+
+//30% 30%,for loop 做改善
+class Solution {
+public:
+    void solve(vector<vector<int>>&ans,vector<int>tmp,vector<int>& candidates,int i,int target){
+        if(target == 0){
+            ans.emplace_back(tmp);
+            return;
+        }
+        if(target<0)return;
+        
+        for(i;i<candidates.size();i++){
+            tmp.emplace_back(candidates[i]);
+            solve(ans,tmp,candidates,i,target-candidates[i]);
+            tmp.pop_back();
+        }
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>>ans;
+        vector<int>tmp;
+        solve(ans,tmp,candidates,0,target);
+        return ans;
+    }
+};
+
+//90% 97%
+class Solution {
+public:
+    void solve(int pos, int target, vector<int>& arr, vector<vector<int>>& ans, vector<int>&tmp){//用&就不用再複製一份出來
+        if(pos==arr.size()){//candi.size()+1
+            if(target==0){
+                ans.push_back(tmp);
+            }
+            return;
+        }
+        if(arr[pos]<=target){//take
+            tmp.push_back(arr[pos]);
+            solve(pos, target-arr[pos], arr, ans,tmp);
+            tmp.pop_back();
+        }
+        //not take
+        solve(pos+1, target, arr, ans,tmp);
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int>tmp;
+        solve(0, target, candidates, ans,tmp);
+        return ans;
+    }
+};
+
