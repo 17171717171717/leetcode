@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void go(vector<vector<int>>&ans,vector<int>&nums,vector<int>&tmp,vector<int>&checking,int now){
+        if(now==nums.size()){
+            ans.emplace_back(tmp);
+        }
+        else{
+            for(int i=0;i<nums.size();i++){
+                if(checking[i]==0){
+                    checking[i]=1;
+                    tmp[now] = nums[i];
+                    go(ans,nums,tmp,checking,now+1);
+                    checking[i]=0;
+                    tmp[now] = nums[i];
+                }
+            }
+        }
+        
+        
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int>checking(nums.size(),0);
+        vector<int>tmp(nums.size());
+        vector<vector<int>>ans;
+        go(ans,nums,tmp,checking,0);
+        return ans;
+    }
+};
