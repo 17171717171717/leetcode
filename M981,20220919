@@ -1,0 +1,17 @@
+class TimeMap {
+public:
+    unordered_map<string,map<int,string>>mp;
+    TimeMap() {    }
+    
+    void set(string key, string value, int timestamp) {
+        mp[key].insert({timestamp,value});
+    }
+    
+    string get(string key, int timestamp) {
+        auto it = mp[key].upper_bound(timestamp);
+        return it == mp[key].begin() ? "" : prev(it)->second;
+        //找到第一個比他大的數，往前退一個就是小於等於了
+        //因為是>timestamp,如果第一個就比他大，那代表沒人<=現在的timestamp          
+    }
+};
+
