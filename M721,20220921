@@ -1,0 +1,59 @@
+class Solution {
+    vector<int>size,parent;
+    int findset(int v){
+        if(v == parent[v]) return v;
+        parent[v] = findset(parent[v]);
+        return parent[v];
+    }
+    void unionset(int u,int v){
+        u = findset(u);
+        v = findset(v);
+        if(u==v)return;
+        //bigger is the parent
+        if(size[u] < size[v]){
+            parent[u] = v;
+            size[v] += size[u];
+        }
+        else{
+            parent[v] = u;
+            size[u] += size[v];
+        }
+    }
+public:
+    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        int n = accounts.size();
+        unordered_map<string,int>sets;
+        int i = 0;
+        
+        //do the union-set
+        for(auto &acc : accounts){
+            parent.push_back(i);
+            size.push_back(1);
+            for(int j=1;j<acc.size();j++){
+                if(sets.count(acc[j])) unionset(i,sets[acc[j]]);
+                else sets[acc[j]] = i;
+            }
+            i++;
+        }
+        
+        //ans DS
+        unordered_map<int,set<string>>ds;
+        for(int i=0;i<n;i++){
+            int p = findset(i);
+            for(int j=1;j<accounts[i].size();j++){
+                ds[p].insert(accounts[i][j]);
+            }
+        }
+        
+        vector<vector<string>>ans;
+        for(auto&[st,ed]:ds){
+            vector<string>tmp;
+            tmp.push_back(accounts[st][0]);
+            for(auto mails:ed){
+                tmp.push_back(mails);
+            }
+            ans.push_back(tmp);
+        }
+        return ans;
+    }
+};
