@@ -1,11 +1,14 @@
 class Solution {
     vector<int>size,parent;
+    
     int findset(int v){
         if(v == parent[v]) return v;
         parent[v] = findset(parent[v]);
         return parent[v];
     }
+    
     void unionset(int u,int v){
+        //if(findset(u)==findset(v)).... => recursion重複做 容易爆炸
         u = findset(u);
         v = findset(v);
         if(u==v)return;
@@ -26,6 +29,9 @@ public:
         int i = 0;
         
         //do the union-set
+        //先把parent設為自己，size=1 為 initial
+        //若SET內已裝了這個MAIL 代表別的account出現過此name + mail
+        // => UNIONSET
         for(auto &acc : accounts){
             parent.push_back(i);
             size.push_back(1);
@@ -37,6 +43,7 @@ public:
         }
         
         //ans DS
+        //n個name，一共|sets|個parents => insert sets所有mail給此parent
         unordered_map<int,set<string>>ds;
         for(int i=0;i<n;i++){
             int p = findset(i);
@@ -45,6 +52,7 @@ public:
             }
         }
         
+        //do the ans.
         vector<vector<string>>ans;
         for(auto&[st,ed]:ds){
             vector<string>tmp;
