@@ -1,0 +1,23 @@
+//dp[i]= 前I個能不能組出來
+//轉移:前J個可以 s[j~i-j]也可以 那就是I也可以
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        unordered_map<string,bool>words;
+        for(auto&word: wordDict){
+            words[word] = true;
+        }
+        int n =s.size();
+        vector<bool>dp(n+1,false);
+        dp[0] = 1;
+        for(int i=1;i<=n;i++){
+            for(int j=i-1;j>=0;j--){
+                if(dp[j] && words[s.substr(j,i-j)]){                    
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+};
