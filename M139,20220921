@@ -1,5 +1,5 @@
 //dp[i]= 前I個能不能組出來
-//轉移:前J個可以 s[j~i-j]也可以 那就是I也可以
+//轉移:前j個可以 s[j~i]也可以 那就是i也可以
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
