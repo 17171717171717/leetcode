@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void recur(vector<vector<int>>&ans,vector<int>&nums,int i){
+        int j=0;//which nums[j] need to be in subset
+        vector<int>tmp;
+        while(i>0){
+            if(i&1)tmp.emplace_back(nums[j]);
+            //110,push nums[0],nums[1]
+            //101,push nums[0],nums[2]
+            i=i>>1;
+            j++;
+        }
+        ans.emplace_back(tmp);
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        //2^n subsets
+        vector<vector<int>>ans;
+        for(int i=0;i<(1<<nums.size());i++){
+            recur(ans,nums,i);//000~111:2^3=8
+        }
+        return ans;
+    }
+};
