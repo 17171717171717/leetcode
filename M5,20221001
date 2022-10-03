@@ -3,7 +3,8 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-
+        //P(i, j) = P(i+1, j-1) && s[i] == s[j];
+        //        = s[i]==s[j] if j = i+1
         int n = s.size();
         bool dp[n][n];
         memset(dp,0,sizeof(dp));
@@ -16,7 +17,8 @@ public:
         }
         
         for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
+            for(int j=i-1;j>=0;j--){ // 04: 34 24(33) 14(23) 04(13)
+          //  for(int j=0;j<i;j++){         04(13) 14(23) 24(33) 34
                 dp[j][i] = (s[i]==s[j] &&(i-j<2||dp[j+1][i-1]));
                 if(dp[j][i]&&len < i-j+1){
                     len = i-j+1;
