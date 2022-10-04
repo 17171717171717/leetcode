@@ -1,0 +1,19 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = preorder.size();
+        return buildtTree(preorder,0,n-1, inorder,0,n-1);
+    }
+    
+    TreeNode* buildtTree(vector<int>& preorder,int pleft,int pright,vector<int>& inorder,int ileft,int iright){
+        if(pleft>pright||ileft>iright)return 0;
+        int now = ileft;
+        while(preorder[pleft]!=inorder[now])now++;
+        TreeNode* newNode = new TreeNode(inorder[now]);
+        newNode->left = buildtTree(preorder,pleft+1,pleft+(now-ileft),inorder,ileft,now-1);
+        newNode->right = buildtTree(preorder,pleft+1+(now-ileft),pright,inorder,now+1,iright);
+        //in:  3 9 20 15 7 -> 3, 20 15 7 ( now = 1 ) 
+        //pre: 9 3 15 20 7 -> 9, 15 20 7
+        return newNode;
+    }
+};
