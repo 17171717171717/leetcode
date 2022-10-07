@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool exist(vector<vector<char>>& board, string word) {
+        int n = word.length();
+        for(int i=0;i<board.size();i++){
+            for(int j=0;j<board[0].size();j++){
+                if(word[0] == board[i][j] ){
+                    if(go(board,word,0,i,j,n))return true;
+                 //   if(go(board,word,1,i,j,n))return true;
+                }
+            }
+        }
+        return false;
+        
+    }
+    bool go(vector<vector<char>>& board, string &word,int i,int x,int y,int &n){
+        if( i == n)return true;
+        if( x>= board.size() || x<0 || y>= board[0].size() || y<0 || board[x][y]!=word[i])return false;
+        board[x][y] = '0';
+        if(go(board,word,i+1,x+1,y,n))return true;
+        else if(go(board,word,i+1,x-1,y,n))return true;
+        else if(go(board,word,i+1,x,y+1,n))return true;
+        else if(go(board,word,i+1,x,y-1,n))return true;
+        /*
+        bool flag = go(board,word,i+1,x-1,y,n) || go(board,word,i+1,x+1,y,n) || go(board,word,i+1,x,y-1,n) || go(board,word,i+1,x,y+1,n);
+        */
+        board[x][y] = word[i];
+        return false;
+    }
+};
