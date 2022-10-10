@@ -1,0 +1,63 @@
+/*class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int sn = s.size();
+        int pn = p.size();
+        //length failed, size pass?
+        if(sn == 0 || pn>sn)return {};
+        vector<int>ans ;
+        vector<int>cnt(128,0);
+        int i = 0;
+        for(i=0;i<pn;i++){
+            cnt[p[i]]++;
+        }
+        
+        i = 0;
+        while(i<sn){
+            bool ok=true;
+            vector<int>tmp = cnt;
+            for(int j=i;j<i+pn;j++){
+                //tmp[p[j]-'a']--;
+                if(--tmp[s[j]]<0){
+                    ok = false;
+                    break;
+                }
+            }
+            if(ok){
+                ans.push_back(i);
+            }
+            i++;
+        }
+        return ans;
+    }
+};*/
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int sn = s.size();
+        int pn = p.size();
+        //length failed, size pass?
+        if(sn == 0 || pn>sn)return {};
+        vector<int>ans ;
+        vector<int>pshow(26,0);
+        vector<int>check(26,0);
+        
+        for(int i = 0;i<pn;i++){
+            pshow[p[i]-'a']++;
+            check[s[i]-'a']++;
+        }
+        if(pshow == check) ans.push_back(0);
+        
+        for(int i=pn;i<sn;i++){
+            check[s[i-pn]-'a']--;//右邊指標往右滑一個
+            check[s[i]-'a']++;//左邊指標往右滑一格
+            
+            if(pshow==check)ans.push_back(i-pn+1);
+            //第0~7, 1~8 OK
+            //0~7 上面已經 checked 過了 所以右邊從8開始滑
+            //i=8開始=>s[0]--,s[8]++,ok, 8-8+1 => 1 ok
+            //兩邊都往右滑 出現次數還是一樣 那就是OK
+        }
+        return ans;
+    }
+};
