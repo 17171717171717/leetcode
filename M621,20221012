@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        int ans;
+        vector<int>cnt(26,0);
+        int mas=0;
+        int maxtimes=0;
+        
+        for(int i=0;i<tasks.size();i++){
+            cnt[tasks[i]-'A']++;
+        }
+        for(auto t:cnt){
+            if(mas<t)mas = t;
+        }
+        for(auto t:cnt){
+            if(t == mas)maxtimes++;
+        }
+        //A5個 n=3 : 4次A~~~為一個round,再加最後一次A
+        //一樣多就要一起多跑
+        //若 AAA BB CC DD n=2 => 只要9
+        // AAAAAA BBBBBB CC DD => AB-AB-AB-AB-AB-AB
+        ans = (mas-1)*(n+1) + maxtimes;
+        
+        return ans > tasks.size() ? ans : tasks.size();
+        
+    }
+};
