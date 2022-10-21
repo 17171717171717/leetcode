@@ -1,0 +1,34 @@
+class LRUCache {
+public:
+    
+    list<pair<int,int>>l;//front -> back : recently -> lately
+    unordered_map<int,list<pair<int,int>>::iterator >m; // m[key]= l.position of <key,value>
+    int size;
+    
+    LRUCache(int capacity) {
+        size = capacity;
+    }
+    
+    int get(int key) {
+        if(m.find(key)==m.end())return -1;//non exist
+        l.splice(l.begin(),l,m[key]);//push m[key] to l.first
+        return l.front().second; // equivalent to m[key].value 
+    }
+    
+    void put(int key, int value) {
+        if(m.find(key)!=m.end()){//exist
+            l.splice(l.begin(),l,m[key]);//move to front
+            m[key]->second = value;
+            return;
+        }
+        if(l.size() == size){//full => delete
+            int curkey = l.back().first;
+            l.pop_back();
+            m.erase(curkey);
+        }
+        l.push_front({key,value});
+        m[key] = l.begin();//iterator to l.begin()
+        
+    }
+};
+
