@@ -1,0 +1,57 @@
+//用hash找list的位置，用list存
+/*
+#include <bits/stdc++.h>
+using namespace std;
+
+int main() {
+    list<pair<int,int>> l ;
+    unordered_map<int, list<pair<int,int>>::iterator>m;
+    l.push_front({1,2});
+    m[0] = l.begin();
+    auto it = m.find(0);
+    cout<< it->first << endl;
+    cout << it->second->first << endl;
+	return 0;
+}
+*/
+//splice : https://www.geeksforgeeks.org/list-splice-function-in-c-stl/
+class LRUCache {
+public:
+    list<pair<int,int>>l;
+    unordered_map<int,list<pair<int,int>>::iterator>m;
+    int cap;
+    LRUCache(int capacity) {
+        cap = capacity;
+    }
+    
+    int get(int key) {
+        auto it = m.find(key);
+        if(it == m.end())return -1;//沒找到
+        
+        l.splice(l.begin(),l,it->second);//找到了，放到最前面
+        m[key] = l.begin();
+        return m[key]->second;
+    }
+    
+    void put(int key, int value) {
+        auto it = m.find(key);
+        
+        if(it!=m.end()){//有，則更新且放到最前面
+            it->second->second = value;
+            l.splice(l.begin(),l,it->second);//it是指向m{key, ((l<key,value>的位置)) }
+        }
+        
+        else if(cap==l.size()){//沒有，且滿了=> 後面的砍掉 新的放前面
+            m.erase(l.back().first);
+            l.pop_back();
+            l.push_front({key,value});
+        }
+        else{//沒有，且沒滿=>直接放到最前面
+            l.push_front({key,value});
+        }
+        //目前m的key放的是l的最前面
+        m[key] = l.begin();//iterator 指向l.begin()會跟著她動
+        
+    }
+};
+
