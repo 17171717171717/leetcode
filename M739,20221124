@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n = temperatures.size();
+        vector<int> ans(n,0);
+        stack<int> s;
+        s.push(n-1);
+        for(int i = n-2 ; i>=0 ; i--){
+            //如果i的比右邊高，代表再左邊的也只需要看i，不需要看比i矮的了
+            while(!s.empty() && temperatures[s.top()]<=temperatures[i]){
+                s.pop();
+            }
+            //只有右邊有人比i高才需要改ans e.g. tem[i] < tem[i+1~n]
+            if(!s.empty()){
+                ans[i] = s.top()-i;
+            }
+            s.push(i);
+        }
+        return ans;
+    }
+};
