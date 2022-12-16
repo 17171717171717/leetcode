@@ -1,0 +1,22 @@
+//總共>0 => 一定有起點當解 => 決定誰是起點 => 每一輪從i開始跑，跑到負的就不為解 => 總共>=0一定有人加完後正到底
+
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        int nowride=0;
+        int ans=0;
+        int idx = 0;
+        int accumlation = 0;
+        for(int i=0;i<n;i++){
+            accumlation += gas[i] - cost[i];
+            nowride += gas[i] - cost[i];
+            if(nowride<0){
+              nowride=0;
+              ans = i+1;
+            }
+        }
+
+        return accumlation>=0 ? ans : -1;
+    }
+};
