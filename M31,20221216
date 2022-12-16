@@ -1,0 +1,42 @@
+//https://leetcode.com/problems/next-permutation/solutions/127524/next-permutation/
+//從後往前看 先找到第一個可以換得 e.g 第一個nums[i] < nums[i+1]的
+//再找到nums[j] 是從後往前看第一個比nums[i]大的
+// e.g 326541 先找到2<6 再找到 4>2 所以先變成 346521 
+//接著再把2跟4中間的人反轉，因為要由大到小變成由小到大 : 345621
+//1已經比2小了 換來前面也沒用
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int i,j;
+        int n = nums.size() ;
+        for(i=n-2 ; i>=0;i--){
+            if(nums[i+1]> nums[i]){
+                for(j=n-1;j>i;j--){
+                    if(nums[j]>nums[i])break;
+                }
+                swap(nums[i],nums[j]);
+                reversing(nums,i+1);
+                return;
+            }
+        }
+        reversing(nums,0);
+    }
+
+    /*
+    void swape(vector<int>& nums, int i , int j){
+        int x = nums[i];
+        nums[i] = nums[j];
+        nums[j] = x;
+    }
+    */
+    
+    void reversing(vector<int>& nums, int st){
+        int ed = nums.size()-1;
+        while(st<ed){
+            swap(nums[st],nums[ed]);
+            st++;
+            ed--;
+        }
+    }
+};
