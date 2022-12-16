@@ -1,0 +1,23 @@
+//unordered_map: 用char對應int : 用key 對應 value
+//row[i]內有沒有出現過c && column[j]有沒有出現過c 有的話就是1 + 1 > 1
+//row 0,1,2 col 0,1,2為一組 所以是subbox[0][0][c]
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+        vector<unordered_map<char,int>>row(9);
+        vector<unordered_map<char,int>>col(9);
+        vector<vector<unordered_map<char,int>>>subbox(3,vector<unordered_map<char,int>>(3));
+        char c;
+        for(int i=0;i<9;i++){
+            for(int j=0;j<9;j++){
+                c = board[i][j];
+                if(c == '.')continue;
+                row[i][c]++;
+                col[j][c]++;
+                subbox[i/3][j/3][c]++;
+                if(row[i][c]>1 || col[j][c] >1 || subbox[i/3][j/3][c] >1) return false;
+            }
+        }
+        return true;
+    }
+};
