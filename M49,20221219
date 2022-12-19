@@ -1,0 +1,24 @@
+/*
+map.count()會RETURN 1 if 有找到
+如果第一次出現:
+開一個位子給他，之後就用這個位子就好
+如果不是:
+直接丟進剛剛的位子
+*/
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>>ans;
+        unordered_map<string , int>m;
+        for(auto str : strs){
+            auto tmp = str;
+            sort(tmp.begin(),tmp.end());
+            if(!m.count(tmp)){
+                m[tmp] = ans.size();
+                ans.push_back({});
+            }
+            ans[m[tmp]].push_back(str);
+        }
+        return ans;
+    }
+};
