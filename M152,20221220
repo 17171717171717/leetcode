@@ -1,0 +1,33 @@
+/*
+nums[i]比0大時 
+case 1: imax之前是正的，直接*
+case 2: imax之前是負的，取nums[i]
+case 3: imin之前是正的，不重要
+case 4: imin之前是負的，直接*
+nums[i]比0小時 
+case 1: imax之前是正的，所以現在imin變 imax * nums[i]
+case 2: imax之前是負的=>imin也是負的 所以imax = imin * nums[i]
+case 3: imin之前是負的，所以imax變成imin * nums[i]
+case 4: imin之前是正的，所以imax是正的，所以imax取nums[i]會負比較少
+*/
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        int ans=nums[0];
+        int imin = ans, imax = ans;
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]>0){
+                imax = max(imax * nums[i],nums[i]);
+                imin = imin * nums[i];
+            }
+            else{
+                int tmp = imax;
+                imax = max(imin * nums[i] , nums[i]);
+                imin = min(tmp * nums[i] , nums[i]);
+            }
+
+            if(ans < imax) ans = imax;
+        }
+        return ans;
+    }
+};
