@@ -1,0 +1,48 @@
+/*
+Trie + dfs
+指標在node, 初始化先創一個root
+isword用來判斷ROOT走到這裡剛好為一個word
+search word內，若tmp沒東西就回傳false
+若走到size=9 則現在為word0~7都走過了，第八回合，代表走了八個characters, 代表直接return是不是一個word
+
+*/
+class WordDictionary {
+private:
+    struct node{
+        node* chars[26] = {NULL};
+        bool isword = false;
+    };
+    node *root = new node();
+public:
+    WordDictionary() {
+    }
+    
+    void addWord(string word) {
+        node *tmp = root;
+        for(auto c : word){
+            int i = c - 'a';
+            if(!tmp->chars[i]) tmp->chars[i] = new node();
+            tmp = tmp->chars[i];
+        }
+        tmp->isword = true;
+    }
+    
+    bool search(string word) {
+        node *now = root;
+        return searchword(word,now,0);
+    }
+
+    bool searchword(string &word, node* tmp,int size){
+        if(!tmp) return false;
+        if(size == word.size())return tmp->isword;
+        if(word[size] == '.'){
+            for(auto x : tmp->chars){
+                if(x && searchword(word,x,size+1))return true;
+            }
+        }
+        else{
+            return searchword(word,tmp->chars[word[size]-'a'],size+1);
+        }
+        return false;
+    }
+};
