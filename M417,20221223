@@ -1,0 +1,42 @@
+/*
+太平洋左上 大西洋右下
+太平洋：所以最左邊跟最上面的開始逆著往右邊跟下面走，只要往回跑的了就代表可以流去太平洋
+大西洋同理
+*/
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        if (heights.empty() || heights[0].empty()) return {};
+        int m = heights.size();
+        int n = heights[0].size();
+        vector<vector<int>> ans;
+        vector<vector<bool>>pacific(m,vector<bool>(n,false));
+        vector<vector<bool>>atlantic(m,vector<bool>(n,false));
+        for(int i=0;i<m;i++){
+            dfs(heights,pacific,-1,i,0);
+            dfs(heights,atlantic,-1,i,n-1);
+        }
+        for(int i=0;i<n;i++){
+            dfs(heights,pacific,-1,0,i);
+            dfs(heights,atlantic,-1,m-1,i);
+        }
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(pacific[i][j] && atlantic[i][j]){
+                    ans.push_back({i,j});
+                }
+            }
+        }
+        return ans;
+    }
+
+    void dfs(vector<vector<int>>& heights, vector<vector<bool>>& ocean, int prehigh, int row, int col ){
+        int m = heights.size(), n = heights[0].size();
+        if(row >= m || col >= n || row < 0 || col < 0 || ocean[row][col] || heights[row][col]<prehigh) return;
+        ocean[row][col] = true;
+        dfs(heights,ocean,heights[row][col],row+1,col);
+        dfs(heights,ocean,heights[row][col],row,col+1);
+        dfs(heights,ocean,heights[row][col],row,col-1);
+        dfs(heights,ocean,heights[row][col],row-1,col);
+    }
+};
