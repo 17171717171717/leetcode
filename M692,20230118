@@ -1,0 +1,47 @@
+class Solution {
+private:
+    typedef pair<string,int>node;
+    //typedef function<bool(node&, node&)>cmp func;
+    
+//要用const
+    typedef function<bool(const node&, const node&)> cmpp;
+
+
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        vector<string>ans;
+        unordered_map<string,int>m;
+        for(auto s:words){
+            m[s]++;
+        }
+        
+ //因為用pri.q要自己寫cmp function
+ //lamba ref: https://blog.gtwang.org/programming/lambda-expression-in-c11/
+        cmpp sortfunc = [](const node& a,const node& b)
+        {
+            // 1: put in front . 0: put behind
+            if(a.second == b.second)return a.first < b.first; // lexico
+            return a.second>b.second; //number
+        };
+
+//pri.q ref: https://yuihuang.com/cpp-stl-priority-queue/
+//因為在最後是使用!cmp做排序，所以1的在下面0的在上面，才會是min heap
+        priority_queue<node,vector<node>,cmpp>q(sortfunc);//cmp is !cmp => big small inverted
+                                                          //(function name)
+
+        for(auto& na : m){
+            q.push(na);
+            if(q.size() > k)q.pop();
+        }
+        while(!q.empty()){
+            ans.push_back(q.top().first);
+            q.pop();
+        }
+
+//因為從min heap由上往下push
+        std::reverse(ans.begin(), ans.end());
+        
+        return ans;
+
+    }
+};
