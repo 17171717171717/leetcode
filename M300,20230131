@@ -1,0 +1,66 @@
+1.
+// L(i) = 1 + max( L(j) ) where 0 < j < i and arr[j] < arr[i]
+// L(i) = 1, if no such j exists
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        int len = nums.size();
+        vector<int>ans(len,1);
+        //int k = 0;
+        int k = 1 ;
+        for(int i=1;i<len;i++){
+            for(int j=0;j<i;j++){
+                if(nums[i] > nums[j] && ans[i] <= ans[j]){
+                //if(nums[i] >= nums[j] && ans[i] < ans[j]){
+                    ans[i] = ans[j] + 1;
+                }
+                // if (nums[i] > nums[j]) {
+                //     dp[i] = max(dp[i], dp[j] + 1);
+                // }
+            }
+            k = max(k,ans[i]);
+        }
+        return k;
+        
+    }
+};
+
+2.
+// 4 2 4 5 3 7
+// 4
+// 2
+// 2 4
+// 2 4 5
+// 2 3 5
+// 2 3 5 7
+// just for inserting the number which bigger than whole array into the array
+// it's not a true order array, but it's absolutely a true size.
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int>ans;
+        ans.push_back(nums[0]);
+        int len = 1;
+        for(int i=1;i<nums.size();i++){
+            int k = ans.size();
+            if(nums[i]<ans[0]) ans[0] = nums[i];
+            
+            else if(nums[i] > ans.back()){
+                ans.push_back(nums[i]);
+                len++;
+            }
+
+            else{
+                int left=0, right = k;
+                while(left < right){
+                    int mid = left + (right-left)/2;
+                    if(ans[mid] < nums[i])left = mid + 1 ;
+                    else right = mid;
+                }
+                ans[right] = nums[i];
+            }
+        }
+        return len;
+    }
+};
