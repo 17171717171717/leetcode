@@ -1,0 +1,46 @@
+// [a , b] => first b, then a
+class Solution {
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int>ans;
+        //numCourses number of vectors
+        //https://ramihaha.tw/c-program-container-vector-array-linklist/
+        vector<int>adj[numCourses];
+
+        // [2,4] [3,4] [1,4]
+        // => 4-> 1, 2, 3
+        for(auto pre : prerequisites){
+            adj[pre[1]].push_back(pre[0]);
+        }
+
+        // indeg[1]++, indeg[2]++, indeg[3]++
+        vector<int>indeg(numCourses,0);
+        for(int i=0; i<numCourses; i++){
+            for(auto ad : adj[i]){
+                indeg[ad]++;
+            }
+        }
+
+        //BFS
+        //queue store all nodes with 0 parent
+        queue<int>q;
+        for(int i=0;i<numCourses;i++){
+            if(indeg[i]==0)q.push(i);
+        }
+
+        int num = 0;
+        while(!q.empty()){
+            int tmp = q.front();
+            q.pop();
+            ans.push_back(tmp);
+            num++;
+            for(auto ad : adj[tmp]){
+                indeg[ad]--;
+                if(indeg[ad] == 0 )q.push(ad);
+            }
+        }
+
+        if(num == numCourses) return ans;
+        return{};
+    }
+};
