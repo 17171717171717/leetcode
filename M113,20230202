@@ -1,0 +1,63 @@
+1.
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        if(!root)return {};
+        vector<vector<int>>ans;
+        vector<int>tmp;
+        recur(root, targetSum, tmp, ans);
+        return ans;
+    }
+    void recur(TreeNode* cur, int remainsum, vector<int>tmp, vector<vector<int>>&ans){
+        if(!cur->left && !cur->right && (remainsum - cur->val) == 0){
+            tmp.push_back(cur->val);
+            ans.push_back(tmp);
+            return;
+        }
+        vector<int>tmpleft = tmp;
+        vector<int>tmpright = tmp;
+
+        if(cur->left){
+            vector<int>tmpleft = tmp;
+            tmpleft.push_back(cur->val);
+            recur(cur->left, remainsum - cur->val, tmpleft, ans);
+        }
+        if(cur->right){
+            vector<int>tmpright = tmp;
+            tmpright.push_back(cur->val);
+            recur(cur->right, remainsum - cur->val, tmpright, ans);
+        }
+    }
+};
+
+2.
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector<vector<int>>ans;
+        vector<int>tmp;
+        recur(root, targetSum, tmp, ans);
+        return ans;
+    }
+    void recur(TreeNode* cur, int remainsum, vector<int>tmp, vector<vector<int>>&ans){
+        if(!cur)return ;
+        tmp.push_back(cur->val);
+        if(!cur->left && !cur->right && (remainsum - cur->val) == 0){
+            ans.push_back(tmp);
+            return;
+        }
+        
+        /*
+        if(cur->left){
+            recur(cur->left, remainsum - cur->val, tmp, ans);
+        }
+        if(cur->right){
+            recur(cur->right, remainsum - cur->val, tmp, ans);
+        }
+        */
+        
+        recur(cur->left, remainsum - cur->val, tmp, ans);
+        recur(cur->right, remainsum - cur->val, tmp, ans);
+        tmp.pop_back();
+    }
+};
