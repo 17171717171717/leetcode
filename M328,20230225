@@ -1,0 +1,22 @@
+
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if(!head || !head->next)return head;
+        ListNode *odd = head, *even = head->next; // tail of odd and even
+        while(even && even->next){ // at least last one
+            //draw the graph
+            
+            ListNode *tmp;
+            
+            tmp = odd->next;
+            odd->next = even->next;
+            even->next = even->next->next;
+            odd->next->next = tmp;
+            odd = odd->next;
+            even = even->next;
+
+        }
+        return head;
+    }
+};
