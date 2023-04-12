@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+        vector<string>ans;
+        recur(n, ans, 0, 0, "");
+        return ans;
+    }
+
+    void recur(int &n, vector<string>&ans, int left, int right, string cur){
+        if(n*2 == cur.length()){
+            ans.push_back(cur);
+            return;
+        }
+        if(left < n){
+            recur(n, ans, left+1, right, cur+'(');
+        }
+        if(right < left){
+            recur(n, ans, left, right+1, cur+')');
+        }
+    }
+};
