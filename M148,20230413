@@ -1,0 +1,63 @@
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head==NULL || head->next==NULL)return head;
+        vector<int>tmp;
+        ListNode* a = head;
+        int n = 0;
+        while(a){
+            tmp.push_back(a->val);
+            a = a->next;
+            n++;
+        }
+        sort(tmp.begin(),tmp.end());
+        ListNode* ans = new ListNode(tmp[0]);        
+        ListNode* cur = new ListNode(tmp[1]);
+        ans->next = cur;
+        for(int i = 1; i < n-1; i++){
+            ListNode* nxt = new ListNode(tmp[i+1]);
+            cur->next = nxt;
+            cur = cur->next;
+        }
+
+        return ans;
+    }
+};
+#####################################2.################
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(!head || !head->next)return head;
+        ListNode* slow = head, *fast = head, *cur = head;
+        while(fast && fast->next){
+            cur = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        } 
+        cur->next = NULL; //break into 2 parts
+
+        return merge(sortList(head),sortList(slow));
+    }
+
+    ListNode* merge(ListNode* left, ListNode* right){
+        ListNode* fixfirst = new ListNode;
+        ListNode* cur = fixfirst;
+        while(left && right){
+            if(left->val < right->val){
+                cur->next = left;
+                left = left->next;
+                cur = cur->next;
+            }
+            else{
+                cur->next = right;
+                right = right->next;
+                cur = cur->next;
+            }
+        }
+        if(left)cur->next = left;
+        if(right)cur->next = right;
+
+        return fixfirst->next;
+
+    }
+};
