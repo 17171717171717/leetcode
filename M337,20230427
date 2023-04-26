@@ -1,0 +1,55 @@
+
+class Solution {
+    unordered_map<TreeNode*, int>m;
+public:
+    int rob(TreeNode* root) {
+        return recur(root);
+    }
+
+    int recur(TreeNode* cur){
+        if(!cur)return 0;
+
+        if(m.count(cur))return m[cur];
+
+        int val = 0;
+
+        if(cur->left){
+            val += recur(cur->left->left) + recur(cur->left->right);
+        }
+        if(cur->right){
+            val += recur(cur->right->left) + recur(cur->right->right);
+        }
+        m[cur] = max(recur(cur->left)+recur(cur->right), val+cur->val);
+        return m[cur];
+    }
+};
+
+
+class Solution {
+private:
+    pair<int,int> max_money_robbed(TreeNode* root){
+        
+        if(root==NULL)return {0,0};
+        //pair(a,b) : has root / doesn't has root
+        pair<int,int>left = max_money_robbed(root->left);
+        pair<int,int>right = max_money_robbed(root->right);
+        
+        //has root
+        int root_house_robbed = left.second + right.second + root->val;
+        
+        //doesnt has root=> left max+right max
+        int root_house_not_robbed = max(left.first,left.second)+ max(right.first,right.second);
+        
+        pair<int,int>ans;
+        
+        ans.first = root_house_robbed, ans.second = root_house_not_robbed;
+        
+        return ans;
+        
+    }
+public:
+    int rob(TreeNode* root) {
+        pair<int,int>result = max_money_robbed(root);
+        return max(result.first,result.second);
+    }
+};
