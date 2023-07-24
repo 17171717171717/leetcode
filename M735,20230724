@@ -1,0 +1,34 @@
+//老鷹帶小雞，看哪邊老鷹大
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int>st;
+        int n = asteroids.size();
+        for(int i = 0; i < n; i++){
+            bool flag = true;
+
+            while(  !st.empty() && (asteroids[i] < 0  && st.top() > 0 ) ){
+                if(abs(st.top()) < abs(asteroids[i])){
+                    st.pop();
+                    continue;
+                }
+                else if (abs(st.top()) == abs(asteroids[i])){
+                    st.pop();
+                }
+
+                flag = 0;
+                break;
+            }
+
+            if(flag) st.push(asteroids[i]);
+        }
+
+        vector<int> remainingAsteroids (st.size());
+        for (int i = remainingAsteroids.size() - 1; i >= 0; i--){
+            remainingAsteroids[i] = st.top();
+            st.pop();
+        }
+        
+        return remainingAsteroids;
+    }
+};
