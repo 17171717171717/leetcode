@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int>pre;
+    Solution(vector<int>& w) {
+        pre = w;
+        for(int i = 1; i< w.size();i++){
+            pre[i] = pre[i-1] + w[i];
+        }
+    }
+    
+    int pickIndex() {
+        int r = rand()% pre.back();
+        int left = 0, right = pre.size()-1, mid;
+        
+        while(left < right){
+            mid = left + (right - left)/2;
+            if(pre[mid] <= r) left = mid+1;
+            else right = mid;
+            
+        }
+        return right;
+
+    }
+};
