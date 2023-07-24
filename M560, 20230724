@@ -1,0 +1,28 @@
+//有K組pre[i]-k 所以加了k次
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        vector<int>pre(n,0);
+        pre[0] = nums[0];
+        for(int i = 1; i < n; i++){
+            pre[i] = pre[i-1] + nums[i];
+        }
+        int ans = 0;
+
+        unordered_map<int,int>m;
+        for(int i = 0; i<n ; i++){
+            if(pre[i]==k) ans++;
+
+            if(m.find(pre[i] - k) != m.end()){
+                ans += m[pre[i] - k];
+                
+            }
+            m[pre[i]]++;
+        }
+        return ans;
+
+
+        
+    }
+};
