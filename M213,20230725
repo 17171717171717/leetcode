@@ -1,0 +1,64 @@
+自己寫的
+https://leetcode.com/problems/kth-largest-element-in-an-array/solutions/3812229/o-n-prune-and-search-but-only-beats-6-49-of-users-with-c/
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int n = nums.size();
+        
+
+    // base case
+        if(n <= 7){
+            sort(nums.begin(),nums.end());
+
+            return nums[n-k];
+        }
+        
+    // 7 nums per sorted group to find median
+        vector<vector<int>> arrays;
+        int groupSize = 7;
+        int numGroups = n / groupSize;
+        
+        for (int i = 0; i < numGroups; i++) {
+            vector<int> array(nums.begin() + i * groupSize, nums.begin() + (i + 1) * groupSize);
+            sort(array.begin(), array.end());
+            arrays.push_back(array);
+
+        }
+    // last group, last numbers
+        if (n % groupSize > 0) {
+            vector<int> array(nums.end() - n % groupSize, nums.end());
+            sort(array.begin(), array.end());
+            arrays.push_back(array);
+            numGroups++;
+
+        }
+    // take medians to find median of median
+        vector<int> medians;
+        for (int i = 0; i < numGroups - 1; i++) {
+            medians.push_back(arrays[i][3]);
+        }
+        medians.push_back(arrays[numGroups - 1][(arrays[numGroups-1].size() - 1 )/ 2]);
+
+
+
+    // recursive find median of medians;
+        int target = findKthLargest(medians, (numGroups + 1) / 2);
+
+    // partition to less numbers to do it again
+        vector<int> S1, S2, S3;
+            for (int num : nums) {
+            if (num < target) S1.push_back(num);
+            else if (num == target) S2.push_back(num);
+            else S3.push_back(num);
+        }
+
+    // find target is belong to which group
+        int n1 = S1.size();
+        int n2 = S2.size();
+        int n3 = S3.size();
+        if (n3 >= k) return findKthLargest(S3, k);
+        else if (n3 + n2 >= k) return target;
+        else return findKthLargest(S1, k - n3 - n2);
+    }
+};
