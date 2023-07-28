@@ -1,0 +1,39 @@
+看位子，01234567 1->6 , 6= 8 - 1 - 1 
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>>ans;
+        if(!root)return ans;
+
+        queue<TreeNode*>q;
+
+        q.push(root);
+        bool lefttoright = true;
+        while(!q.empty()){
+            int qsize = q.size();
+            vector<int>tmp(qsize);
+
+            for(int i = 0 ; i < qsize ; i++){
+                TreeNode* tmpp = q.front();
+                q.pop();
+                if(lefttoright){
+                    tmp[i] = tmpp->val;
+                }
+                else{
+                    tmp[qsize - i - 1] = tmpp->val;
+                }
+
+                if(tmpp->left){
+                    q.push(tmpp->left);
+                }
+                if(tmpp->right){
+                    q.push(tmpp->right);
+                }
+            }
+            lefttoright = !lefttoright;
+            ans.push_back(tmp);
+        }
+        
+        return ans;
+    }
+};
