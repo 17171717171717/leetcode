@@ -1,0 +1,95 @@
+dp，用倒數第一個跟倒數前兩個做case，dp[i]=s[0]~s[i-1]的答案，2cases:
+1.最後一個可以decode => +dp[i-1]
+2.最後兩個可以decode => +dp[i-2]
+11=2, 113=3, 1132=3, 11324=6
+s=011
+dp=10(dp[1]+0(s[i-2]=="0")00
+class Solution {
+public:
+    int numDecodings(string s) {
+        if(s[0]=='0')return 0;
+        vector<int>dp(s.size()+1);
+        dp[0] = 1;
+        if(s[0]=='0')dp[1]=0;
+        else dp[1] = 1;
+
+        for(int i = 2; i <= s.size();i++){
+            int one=0,two=0;
+            if(s[i-1] == '0'){
+                one = 0;
+            }else one = dp[i-1];
+
+            if ((10 * (s[i-2] - '1' + 1) + (s[i-1] - '1' + 1)) < 27 && s[i-2] != '0'){
+                two = dp[i-2];
+            }else two = 0;
+
+            dp[i] = one + two;
+        }
+
+        return dp[s.length()];
+    }
+};
+
+recur可以過，但TLM
+#include <iostream>
+#include <string>
+
+class Solution {
+public:
+    int ans = 0;
+
+    int numDecodings(std::string s) {
+        if (s[0] == '0') return 0;
+        recur(s);
+        return ans;
+    }
+
+    void recur(std::string cur) {
+        if (cur[0] == '0') return;
+        if (cur.length() == 1) {
+            ans++;
+            return;
+        }
+        if (cur.length() == 2) {
+            if ((10 * (cur[0] - '1' + 1) + (cur[1] - '1' + 1)) < 27 && cur[1] != '0') {
+                ans += 2;
+                return;
+            }
+            else {
+                ans += 1;
+                return;
+            }
+        }
+
+        recur(cur.substr(1, cur.length() - 1));
+
+        if ((10 * (cur[0] - '1' + 1) + (cur[1] - '1' + 1)) < 27) {
+            recur(cur.substr(2, cur.length() - 2));
+        }
+    }
+};
+
+int main() {
+    Solution solution;
+
+    // Test cases
+    std::string test1 = "11324";
+    std::string test2 = "1132";
+    std::string test3 = "113";
+    std::string test4 = "11";
+
+    int result1 = solution.numDecodings(test1);
+    solution.ans = 0;
+    int result2 = solution.numDecodings(test2);
+    solution.ans = 0;
+    int result3 = solution.numDecodings(test3);
+    solution.ans = 0;
+    int result4 = solution.numDecodings(test4);
+
+    std::cout << "Test 1: " << test1 << " -> " << result1 << std::endl;
+    std::cout << "Test 2: " << test2 << " -> " << result2 << std::endl;
+    std::cout << "Test 3: " << test3 << " -> " << result3 << std::endl;
+    std::cout << "Test 4: " << test4 << " -> " << result4 << std::endl;
+
+    return 0;
+}
