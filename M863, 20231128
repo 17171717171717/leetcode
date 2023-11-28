@@ -1,0 +1,46 @@
+map要有key value
+set用insert跟find/end
+class Solution {
+public:
+    unordered_map<TreeNode*,TreeNode*>p;
+    vector<int>ans;
+    set<TreeNode*>m;
+    
+    void findparent(TreeNode* cur){
+        if(!cur)return;
+        if(cur->left){
+            p[cur->left] = cur;
+            findparent(cur->left);
+        }
+        if(cur->right){
+            p[cur->right] = cur;
+            findparent(cur->right);
+        }
+    }
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if(!root)return{};
+        findparent(root);
+        dfs(target,k);
+        return ans;
+    }
+
+    void dfs(TreeNode* cur, int k){
+        if(m.find(cur)!=m.end())return ;
+        
+        m.insert(cur);
+        if(k==0){
+            ans.emplace_back(cur->val);
+            return;
+        }else{
+            if(cur->left){
+                dfs(cur->left,k-1);
+            }
+            if(cur->right){
+                dfs(cur->right,k-1);
+            }
+            if(p[cur]){
+                dfs(p[cur],k-1);
+            }
+        }
+    }
+};
