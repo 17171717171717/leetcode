@@ -1,0 +1,41 @@
+//https://www.youtube.com/watch?v=IzynHx-O4lE
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        
+        int n = s.length(), m = t.length();
+        
+        unordered_map<char, int>s_freq;
+        unordered_map<char, int>t_freq;
+        
+        for(int i = 0 ; i < m ; i++){
+            t_freq[t[i]]++;
+        }
+        
+        int tmp= INT_MAX; //目前最佳
+        string ans;
+        int cnt = 0; //算頻率
+
+        for(int slow=0, fast=0; fast < n ; fast++){
+            char c = s[fast];
+            if(t_freq.find(c) != t_freq.end()){ //在t裡面
+                s_freq[c]++;
+                if(s_freq[c] <= t_freq[c]){ // 還沒找完全部
+                    cnt++;
+                }
+            }
+            if(cnt >= m){//找完全部了
+                while(t_freq.find(s[slow])==t_freq.end() || s_freq[s[slow]] > t_freq[s[slow]]){ //不重要的 || 目前足夠的characters
+                    s_freq[s[slow]]--;
+                    slow++;
+                }
+                if(fast - slow + 1 < tmp){
+                    tmp = fast - slow + 1;
+                    ans = s.substr(slow, tmp);
+                }
+            }
+        }
+        return ans;
+    }
+};
