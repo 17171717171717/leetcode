@@ -1,0 +1,32 @@
+class Solution {
+public:
+    unordered_map<int, int>mp;
+
+    bool recur(int n){
+        int tmp = 0;
+        vector<int>vc;
+        while(n > 0){
+            tmp = n % 10;
+            vc.push_back(tmp);
+            n = n / 10;
+        }
+        tmp = 0;
+        for(int i = 0 ; i < vc.size() ; i++){
+            tmp += vc[i]*vc[i];
+            cout << "vc[i]: " << vc[i] << " tmp: " << tmp << endl;
+        }
+        if(tmp == 1)return true;
+        else {
+            mp[tmp] += 1;
+            cout << "mp tmp:" << mp[tmp] << endl;
+            if(mp[tmp] > 1)return false;
+            else return recur(tmp);
+        }
+    }
+    
+    bool isHappy(int n) {
+
+        return recur(n);
+
+    }
+};
