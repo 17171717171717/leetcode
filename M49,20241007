@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        unordered_map<long long, vector<string>> res;
+        for(auto s : strs) 
+            res[hash(s)].push_back(s);
+        vector<vector<string>> ans;
+        for(auto r : res)
+            ans.push_back(r.second);
+        return ans;
+    }
+
+    vector<int> primes = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101};
+    long long mod = 1e9+7;
+    long long hash(string &s) {
+        long long res = 1;
+        for(auto c : s) {
+           res = res * primes[c - 'a'];
+           res %= mod;
+        }
+        return res;
+    }
+};
