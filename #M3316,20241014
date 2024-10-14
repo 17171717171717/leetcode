@@ -1,0 +1,72 @@
+轉問題：
+所有index內不能砍的找出來 => 代表砍了它們沒辦法變成pattern
+=> 剩下來的都是能砍的
+
+dp:
+1. src[s] = pat[p]:
+    (a)s in target
+      (a.1) src[s]不能砍: ( 1+ src[i+1:],pat[j+1:]不能砍的
+      (a.2) src[s]能砍 => 不算在不能砍裡面:   ( src[i+1:],pat[j:]不能砍的
+    
+    (b.)s not in target
+      => 直接砍了，接下來找src[i+1:],pat[j+1:] , 還是能找到後面有最少不能砍的
+
+2. src[s] != pat[p]:
+  不關這一格的事情，因為是找不能砍的，這個一定可以砍，所以不用算答案
+
+https://leetcode.com/problems/find-maximum-removals-from-source-string/solutions/5910616/easy-way-to-think/
+
+typedef long long int ll;
+class Solution {
+public:
+    long long solve(int s,int p,string&source,string&pattern,vector<bool>&isthere,vector<vector<int>>&dp)
+    {
+        if(p == pattern.size())
+            return 0;
+            
+        else if(s == source.size())
+            return INT_MAX;
+
+        if(dp[s][p] != -1)
+        {
+            return dp[s][p];
+        }
+        if(source[s] == pattern[p])
+        {
+            if(isthere[s])
+            {
+                ll cand1 = 1LL + solve(s+1,p+1,source,pattern,isthere,dp);
+                ll cand2 = solve(s+1,p,source,pattern,isthere,dp);
+                ll ans = min(cand1,cand2);
+                dp[s][p] = ans;
+                return ans;
+            }
+            else
+            {
+                ll ans = solve(s+1,p+1,source,pattern,isthere,dp);
+                dp[s][p] = ans;
+                return ans;
+            }
+        }
+        else
+        {
+            ll ans = solve(s+1,p,source,pattern,isthere,dp);
+            dp[s][p] = ans;
+            return ans;
+        }
+        return 0;
+        
+    }
+    int maxRemovals(string source, string pattern, vector<int>& target) {
+        int n = source.size();
+        int p = pattern.size();
+        vector<bool>isthere(n,false);
+        for(auto&it:target)
+        {
+            isthere[it] = true;
+        }
+        vector<vector<int>>dp(n,vector<int>(p,-1));
+        ll ans = solve(0,0,source,pattern,isthere,dp);
+        return (ll)target.size() - ans;
+    }
+};
