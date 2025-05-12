@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> findEvenNumbers(vector<int>& digits) {
+        vector<int>v(10,0);
+        for(auto& d: digits)v[d]++;
+        vector<int>ans;
+        for(int i = 100; i < 999; i+=2){
+            vector<int>cur(10);
+            int tmp = i;
+            while(tmp){
+                cur[tmp%10]+=1;
+                tmp/=10;
+            }
+
+            bool ok = true;
+            for(int j = 0; j < 10; j++){
+                if(cur[j] > v[j])ok=false;
+            }
+
+            if(ok)ans.push_back(i);
+        }
+        return ans;
+    }
+};
