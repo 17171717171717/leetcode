@@ -1,0 +1,97 @@
+class Solution {
+public:
+    string pushDominoes1(string s) {
+        int n = s.size();
+        queue<int>L,R;
+        vector<int>check(n,0); // 1 for L, 2 for R
+        string ans = string(n,'.');
+        for(int i = 0; i < n; i++){
+            if(s[i]=='L'){
+                L.push(i);
+                check[i] = true;
+                ans[i] = 'L';
+            }
+            else if(s[i]=='R'){
+                R.push(i);
+                check[i] = true;
+                ans[i] = 'R';
+            }
+        }
+        while(!L.empty() || !R.empty()){
+            queue<int>newL,newR;
+            while(!L.empty()){
+                int cur = L.front();
+                L.pop();
+                if(cur==0)continue;
+                if(cur==1){
+                    if(ans[0]=='.'){
+                        ans[0] = 'L';
+                        continue;
+                    }
+                }
+                if(ans[cur-1]=='.' ){
+                    if(ans[cur-2]!='R'){
+                    ans[cur-1] = 'L';
+                    newL.push(cur-1);
+                    }
+                    else{
+                        check[cur-1]=true;
+                    }
+                }
+            }
+            L = newL;
+            while(!R.empty()){
+                int cur = R.front();
+                R.pop();
+                if(cur==n-1)continue;
+                if(cur==n-2){
+                    if(ans[n-1]=='.' && !check[cur+1]){
+                        ans[n-1] = 'R';
+                        continue;
+                    }
+                }
+                if(ans[cur+1]=='.' ){
+                    if(check[cur+1]){
+                        continue;
+                    }
+                    else{
+                        ans[cur+1] = 'R';
+                        newR.push(cur+1);
+                    }
+                }
+            }
+            R = newR;
+        }
+        return ans;
+    }
+
+    string pushDominoes(string s) {
+        s = 'L' + s + 'R';
+        string ans;
+        int prev = 0;
+        for (int curr = 1; curr < s.size(); ++curr) {
+            if (s[curr] == '.') {
+                continue;
+            }
+
+            int span = curr - prev - 1;
+            if (prev > 0) 
+                ans += s[prev];
+
+            if (s[prev] == s[curr]) {
+                ans += string(span, s[prev]);
+            }
+            else if (s[prev] == 'L' && s[curr] == 'R') {
+                ans += string(span, '.');
+            }
+            else { 
+                ans += string(span / 2, 'R')
+                     + string(span % 2, '.')
+                     + string(span / 2, 'L');
+            }
+            prev = curr;
+        }
+        return ans;
+    
+    }
+};
